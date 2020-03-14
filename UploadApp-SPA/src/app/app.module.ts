@@ -4,15 +4,19 @@ import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
 import { ValueComponent } from './value/value.component';
+import { FileUploadModule } from 'ng2-file-upload';
+// import { FileSelectDirective } from 'ng2-file-upload';
 
 @NgModule({
    declarations: [
       AppComponent,
       ValueComponent
+      // FileSelectDirective
    ],
    imports: [
       BrowserModule,
-      HttpClientModule
+      HttpClientModule,
+      FileUploadModule
    ],
    providers: [],
    bootstrap: [
