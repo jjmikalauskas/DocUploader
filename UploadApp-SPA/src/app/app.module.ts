@@ -3,15 +3,14 @@ import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 
 import { AppComponent } from './app.component';
-import { ValueComponent } from './value/value.component';
 import { FileUploadModule } from 'ng2-file-upload';
 // import { FileSelectDirective } from 'ng2-file-upload';
+import { UploaderComponent } from './uploader/uploader.component';
 
 @NgModule({
    declarations: [
       AppComponent,
-      ValueComponent
-      // FileSelectDirective
+      UploaderComponent
    ],
    imports: [
       BrowserModule,

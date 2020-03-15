@@ -5,13 +5,12 @@ import { FileUploader } from 'ng2-file-upload';
 import { environment } from 'src/environments/environment';
 
 @Component({
-  selector: 'app-value',
-  templateUrl: './value.component.html',
-  styleUrls: ['./value.component.css']
+  selector: 'app-uploader',
+  templateUrl: './uploader.component.html',
+  styleUrls: ['./uploader.component.css']
 })
-export class ValueComponent implements OnInit {
+export class UploaderComponent implements OnInit {
   values: any;
-  // public uploader: FileUploader = new FileUploader({ url: URL, itemAlias: 'photo' });
   uploader: FileUploader;
   hasBaseDropZoneOver: boolean;
   baseUrl = environment.apiUrl;
@@ -53,6 +52,19 @@ export class ValueComponent implements OnInit {
       }, error => {
           console.log(error);
       });
+  }
+
+  sendDocInfo() {
+     let docInfo = {
+        documents: [ 'test' ],
+        recipientlist: [ 'recipient1', 'recipient2' ],
+        sendername: 'john',
+        senderemail: 'johnmik35@hotmail.com'
+      };
+     console.log('docInfo=' + docInfo.recipientlist);
+     this.http.post(this.baseUrl + 'send', docInfo).subscribe(response => {
+      console.log('Returned from Post', response);
+     });
   }
 
 }
