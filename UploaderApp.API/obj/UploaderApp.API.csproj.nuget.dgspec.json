@@ -1,23 +1,20 @@
 {
   "format": 1,
   "restore": {
-    "E:\\source\\angular\\DocUploader\\UploaderApp.API\\UploaderApp.API.csproj": {}
+    "C:\\Users\\Haydenr\\repo\\personal\\DocUploader\\UploaderApp.API\\UploaderApp.API.csproj": {}
   },
   "projects": {
-    "E:\\source\\angular\\DocUploader\\UploaderApp.API\\UploaderApp.API.csproj": {
+    "C:\\Users\\Haydenr\\repo\\personal\\DocUploader\\UploaderApp.API\\UploaderApp.API.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "E:\\source\\angular\\DocUploader\\UploaderApp.API\\UploaderApp.API.csproj",
+        "projectUniqueName": "C:\\Users\\Haydenr\\repo\\personal\\DocUploader\\UploaderApp.API\\UploaderApp.API.csproj",
         "projectName": "UploaderApp.API",
-        "projectPath": "E:\\source\\angular\\DocUploader\\UploaderApp.API\\UploaderApp.API.csproj",
-        "packagesPath": "C:\\Users\\default.DESKTOP-GRQ62EF\\.nuget\\packages\\",
-        "outputPath": "E:\\source\\angular\\DocUploader\\UploaderApp.API\\obj\\",
+        "projectPath": "C:\\Users\\Haydenr\\repo\\personal\\DocUploader\\UploaderApp.API\\UploaderApp.API.csproj",
+        "packagesPath": "C:\\Users\\Haydenr\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Haydenr\\repo\\personal\\DocUploader\\UploaderApp.API\\obj\\",
         "projectStyle": "PackageReference",
-        "fallbackFolders": [
-          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-        ],
         "configFilePaths": [
-          "C:\\Users\\default.DESKTOP-GRQ62EF\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Haydenr\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
@@ -52,6 +49,14 @@
             "Microsoft.EntityFrameworkCore.SqlServer": {
               "target": "Package",
               "version": "[3.1.2, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[3.1.2, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "target": "Package",
+              "version": "[3.1.2, )"
             }
           },
           "imports": [
@@ -72,7 +77,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.102\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\3.1.101\\RuntimeIdentifierGraph.json"
         }
       }
     }
