@@ -37,30 +37,34 @@ export class DestinationComponent implements OnInit {
     //   console.log(params.emaillink);
     // });
     console.log('resolver data=');
-    this.route.data.subscribe(
-      (data: { doc: DocInfo }) => {
-         this.doc1 = data.doc;
-         this.lastname = data.doc.lastname;
-      });
-    // this.getDocumentInfo(this.emailLink);
+    // this.route.data.subscribe(
+    //   (data: { doc: DocInfo }) => {
+    //     console.log(data);
+    //     this.doc1 = data.doc;
+    //     this.lastname = data.doc.lastname;
+    //     this.firstname = 'Test1';
+    //   });
+    this.getDocumentInfo(this.emailLink);
+    // this.route.data.subscribe(data => this.doc1 = data);
+    // debugger;
   }
 
   getDocumentInfo(emaillink: string) {
-    // const url = this.baseUrl + 'licensing/' + emaillink;
-    // console.log(url);
-    // this.docService.getDocumentInfo(emaillink).subscribe(
-    //   (response: DocInfo) => {
-    //     // debugger;
-    //     console.log('Get data call successful');
-    //     console.log(response);
-    //     // this.docInfo = response.data;
-    //     this.firstname = response["firstName"];
-    //     this.lastname = response["lastName"];
-    //   },
-    //   error => {
-    //     console.log('Error during getDocumentInfo GET op', error);
-    //   }
-    // );
+    const url = this.baseUrl + 'licensing/' + emaillink;
+    console.log(url);
+    this.docService.getDocumentInfo(emaillink).subscribe(
+      (response: DocInfo) => {
+        // debugger;
+        console.log('Get data call successful');
+        console.log(response);
+        this.doc1 = response;
+        this.firstname = response["firstName"];
+        this.lastname = response["lastName"];
+      },
+      error => {
+        console.log('Error during getDocumentInfo GET op', error);
+      }
+    );
   }
 
   confirm() {

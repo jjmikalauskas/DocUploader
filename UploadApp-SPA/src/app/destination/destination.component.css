@@ -3,3 +3,6 @@
     top: 0;
     z-index: 100;
 }
+.destination{
+    height: 100vh;
+}
