@@ -1,5 +1,5 @@
-.info-form{
-
+.nv-file-over { 
+    border: dotted 3px red;
 }
 .upload-page{
     padding: 20px;
@@ -23,5 +23,4 @@
 }
 .file-input > button{
     cursor: pointer;
-
 }

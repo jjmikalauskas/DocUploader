@@ -1,6 +1,4 @@
-<app-header
-  (reset)="initializeUploader($event)"
-  (sendDocInfo)="sendDocInfo($event)">
+<app-header (reset)="initializeUploader($event)" (sendDocInfo)="sendDocInfo($event)">
 </app-header>
 
 <div class="upload-page">
@@ -10,20 +8,22 @@
       <div class="row">
         <div class="col-md-6 mb-3 cc_cursor">
           <label for="firstName">First name</label>
-          <input type="text" class="form-control cc_cursor" id="firstName" placeholder="" value="" required="" formControlName="firstname"/>
+          <input type="text" class="form-control cc_cursor" id="firstName" placeholder="" value="" required=""
+            formControlName="firstname" />
           <div class="invalid-feedback">
             Valid first name is required.
           </div>
         </div>
         <div class="col-md-6 mb-3">
           <label for="lastName">Last name</label>
-          <input type="text" class="form-control" id="lastName" placeholder="" value="" required="" formControlName="lastname"/>
+          <input type="text" class="form-control" id="lastName" placeholder="" value="" required=""
+            formControlName="lastname" />
           <div class="invalid-feedback">
             Valid last name is required.
           </div>
         </div>
       </div>
-    
+
       <div class="mb-3">
         <label for="email">Email <span class="text-muted">(required)</span></label>
         <input [class.is-invalid]="
@@ -38,32 +38,21 @@
   <section class="add-document mb-3">
     <h3>Add Documents</h3>
     <br />
-    <div
-      ng2FileDrop
-      [ngClass]="{ 'nv-file-over': hasBaseDropZoneOver }"
-      (fileOver)="fileOverBase($event)"
-      [uploader]="uploader"
-      class="card bg-faded p-3 text-center mb-3 my-drop-zone"
-    >
+    <div ng2FileDrop [ngClass]="{ 'nv-file-over': hasBaseDropZoneOver }" (fileOver)="fileOverBase($event)" 
+      [uploader]="uploader" class="card bg-faded p-3 text-center mb-3 my-drop-zone">
       <i class="fa fa-upload fa-3x"></i>
-      <span>Drop Photos here</span>
+      <span>Drop Documents here</span>
     </div>
-    <input
-      class="file-input"
-      type="file"
-      ng2FileSelect
-      [uploader]="uploader"
-      multiple
-    />
+    <input class="file-input" type="file" ng2FileSelect [uploader]="uploader" multiple />
   </section>
   <section class="upload-queue mb-3">
     <!-- </div>*ngIf="uploader?.queue?.length"> -->
 
     <h3>Upload queue</h3>
 
-     <p>Queue length: {{ uploader?.queue?.length }}</p>
+    <p>Queue length: {{ uploader?.queue?.length }}</p>
 
-   <table class="table">
+    <table class="table">
       <thead>
         <tr>
           <th width="50%">Name</th>
@@ -83,34 +72,18 @@
     </table>
     <div class="mb-3 queue">
       <p>Queue progress:</p>
-      <div
-        class="progress-bar"
-        role="progressbar"
-        [ngStyle]="{ width: uploader.progress + '%' }"
-      ></div>
+      <div class="progress-bar" role="progressbar" [ngStyle]="{ width: uploader.progress + '%' }"></div>
       <ul class="action-list">
-        <button
-          type="button"
-          class="btn btn-success btn-s"
-          (click)="uploader.uploadAll()"
-          [disabled]="!uploader.getNotUploadedItems().length"
-        >
+        <button type="button" class="btn btn-success btn-s" (click)="uploader.uploadAll()"
+          [disabled]="!uploader.getNotUploadedItems().length">
           <span class="fa fa-upload"></span> Upload
         </button>
-        <button
-          type="button"
-          class="btn btn-warning btn-s"
-          (click)="uploader.cancelAll()"
-          [disabled]="!uploader.isUploading"
-        >
+        <button type="button" class="btn btn-warning btn-s" (click)="uploader.cancelAll()"
+          [disabled]="!uploader.isUploading">
           <span class="fa fa-ban"></span> Cancel
         </button>
-        <button
-          type="button"
-          class="btn btn-danger btn-s"
-          (click)="uploader.clearQueue()"
-          [disabled]="!uploader.queue.length"
-        >
+        <button type="button" class="btn btn-danger btn-s" (click)="uploader.clearQueue()"
+          [disabled]="!uploader.queue.length">
           <span class="fa fa-trash"></span> Remove
         </button>
       </ul>

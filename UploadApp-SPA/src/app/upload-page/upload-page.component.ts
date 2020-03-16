@@ -5,6 +5,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 
 import { environment } from 'src/environments/environment';
+import { AlertifyService } from '../_services/alertify.service';
 
 
 @Component({
@@ -16,34 +17,40 @@ export class UploadPageComponent implements OnInit {
   values: any;
   uploader: FileUploader;
   hasBaseDropZoneOver: boolean;
+  droppedFiles: string[];
   baseUrl = environment.apiUrl;
-  dntLinkUrl='';
+  dntLinkUrl = '';
   userEmails = new FormGroup({
     firstname: new FormControl(''),
     lastname: new FormControl(''),
     email: new FormControl('',
       [
         Validators.required,
-        Validators.pattern("^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$")
+        Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')
       ]
     ),
   });
 
-  constructor(private http: HttpClient, private router: Router,private route: ActivatedRoute) { }
+  constructor(private http: HttpClient, private router: Router, private route: ActivatedRoute, private notify: AlertifyService) { }
 
   ngOnInit() {
     this.getValues();
     this.initializeUploader();
-    this.dntLinkUrl = this.route.snapshot.params['temporaryUrl'];
+    this.dntLinkUrl = this.route.snapshot.params.temporaryUrl;
   }
 
   public fileOverBase(e: any): void {
     this.hasBaseDropZoneOver = e;
   }
 
+  public onFileDrop(e: any): void {
+    console.log('Dropped=' + e);
+    this.droppedFiles = e;
+  }
+
   initializeUploader() {
     this.uploader = new FileUploader({
-      url: this.baseUrl + '/photos', // 'users/' + this.authService.decodedToken.nameid + '/photos',
+      url: this.baseUrl + 'docs', // 'users/' + this.authService.decodedToken.nameid + '/photos',
       // authToken: 'Bearer' + localStorage.getItem('token'),
       isHTML5: true,
       // allowedFileType: ['image'],
@@ -71,23 +78,28 @@ export class UploadPageComponent implements OnInit {
 
   sendDocInfo() {
     let docInfo = {
-      documents: 'testfromangular',
-      firstname: this.userEmails.get('firstname').value, 
+      // documents: [],
+      documentfullname: '',
+      firstname: this.userEmails.get('firstname').value,
       lastname: this.userEmails.get('lastname').value,
-      emailaddress: this.userEmails.get('email').value
+      emailaddress: this.userEmails.get('email').value,
+      company: 'Test hospital',
+      salesforceid: '101'
     };
-    console.log('f l name=' + docInfo.firstname);
+    let files = [];
+    let docs = '';
+    console.log('uploader=');
+    this.uploader.queue.forEach(f => { console.log(f.file.name); files.push(f.file.name); docs = docs + f.file.name + ';'; });
+    //docInfo.documents = files;
+    docInfo.documentfullname = docs;
     this.http.post(this.baseUrl + 'sendlink', docInfo).subscribe(
       (response) => {
-      console.log('Post call successful', response);
-      this.router.navigate(['/success-upload']);
+        this.notify.success('Document and email information saved');
+        console.log('Post call successful');
+        this.router.navigate(['/success-upload']);
     },
     error => {
       console.log('Error during sendLink POST op', error);
-    },
-    () => {
-      console.log('POST complete...');
     });
-    // this.router.navigate(['/success-upload',this.dntLinkUrl]);
   }
 }

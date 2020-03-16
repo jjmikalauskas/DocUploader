@@ -60,6 +60,7 @@ namespace DatingApp.API.Controllers
             doc.Description = sLink;
             doc.dateSent = DateTime.Now;
             doc.Status = "0-Sent";
+            string[] files = doc.DocumentFullName.Split(';');
 
             var obj = JsonConvert.SerializeObject(s1);
 
