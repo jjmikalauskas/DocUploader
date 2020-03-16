@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
 import { Routes, RouterModule } from '@angular/router';
 
 import { FileUploadModule } from 'ng2-file-upload';
@@ -13,6 +13,9 @@ import { UploadPageComponent } from './upload-page/upload-page.component';
 import { HeaderComponent } from './header/header.component';
 import { SuccessPageComponent } from './success-page/success-page.component';
 import { DestinationComponent } from './destination/destination.component';
+import { DocumentResolverService } from './_services/documentResolver.service';
+import { DocDataService } from './_services/docData.service';
+import { AlertifyService } from './_services/alertify.service';
 
 const routes: Routes = [
    {
@@ -26,8 +29,9 @@ const routes: Routes = [
       component: SuccessPageComponent
    },
    {
-      path: 'sign-doc',
-      component: DestinationComponent
+      path: 'sign-doc/:emaillink',
+      component: DestinationComponent      ,
+      resolve: { DocInfo: DocumentResolverService }
    }
 ];
 
@@ -43,13 +47,18 @@ const routes: Routes = [
    ],
    imports: [
       BrowserModule,
+      FormsModule,
       HttpClientModule,
       FileUploadModule,
       ReactiveFormsModule,
       PdfViewerModule,
       RouterModule.forRoot(routes)
    ],
-   providers: [],
+   providers: [
+      AlertifyService,
+      DocDataService,
+      DocumentResolverService
+   ],
    bootstrap: [
       AppComponent
    ]

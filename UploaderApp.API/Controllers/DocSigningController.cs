@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
+using System.Net.Mail;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -11,14 +13,14 @@ using UploaderApp.API.Data;
 using UploaderApp.API.Dtos;
 using UploaderApp.API.Models;
 
-namespace DatingApp.API.Controllers
+namespace UploaderApp.API.Controllers
 {
     [ApiController]
-    public class ValuesController : ControllerBase
+    public class LicensingController : ControllerBase
     {
         private readonly DataContext _context;
         private readonly ISendLinkRepository _repo;
-        public ValuesController(DataContext context, ISendLinkRepository repo)
+        public LicensingController(DataContext context, ISendLinkRepository repo)
         {
             _repo = repo;
             _context = context;
@@ -33,20 +35,28 @@ namespace DatingApp.API.Controllers
             return Ok(values);
         }
 
-        [Route("api/[controller]/{id}")]
+        [Route("api/values/{id}")]
         // GET api/values/5
         [HttpGet]
         public async Task<IActionResult> Get(int id)
         {
-            string s1 = "Not found";
-            var value = await _context.Values.FirstOrDefaultAsync(x => x.Id == id);
-            var doc = _repo.GetEmailLink(new Guid(), "2020-3815-1403-SS99").Result;
+            var value = await _context.Values.FirstOrDefaultAsync(x => x.Id == id);           
+            return Ok(value.Name);
+        }
+
+        [Route("api/[controller]/{emaillink}")]
+        // Get api/licesing/5
+        [HttpGet]
+        public IActionResult GetDocInfo(string emaillink)
+        {
+            string s1 = "not found";
+            var doc = _repo.GetEmailLink(new Guid(), emaillink).Result;
             if (doc!=null)
             {
                 s1 = $"Sent {doc.DocumentFullName} to {doc.FirstName} {doc.LastName} at {doc.EmailAddress} at company {doc.Company}";
-                Debug.WriteLine(s1);
+                return Ok(doc);
             }
-            return Ok(s1);
+            return NoContent();
         }
 
         // POST api/values
@@ -67,14 +77,64 @@ namespace DatingApp.API.Controllers
             _repo.Add<DocumentInfo>(doc);
 
             if (await _repo.SaveAll())
+            {
+                string from = "johnmik35@hotmail.com";
+                string to = "johnmik4x@hotmail.com";
+                string subject = "Licensing agreement from IndxLogic";
+
+                MailMessage msg = CreateMsg(sLink, from, to, subject);
+                SendMsg(msg);
                 return Ok();
+            }
 
             return BadRequest("Error saving document/ email link info to database");
         }
 
+        private bool SendMsg(MailMessage msg)
+        {
+            SmtpClient sv = new SmtpClient("smtp.gmail.com", 587);
+            sv.EnableSsl = true;
+            sv.Credentials = new NetworkCredential("cxmikalauskas@gmail.com", "So1omonOrange");
+
+            try
+            {
+                sv.Send(msg);
+                Console.WriteLine("email Sent");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("email not sent");
+                Console.WriteLine(ex.Message);
+                return false;
+            }
+            return true;
+        }
+
+        private string signingBase = "localhost:5000/licensing/";
+
+        private MailMessage CreateMsg(string uniqueId, string from, string to, string subject)
+        {
+            MailMessage msg = null;
+            string body = "Hi. Thanks for your business. Please click this link to sign the licensing agreement:";
+            body += $"<button><a href='{signingBase}/{uniqueId}'></a></button>";
+
+            msg = new MailMessage(from, to, subject, body);
+            msg.IsBodyHtml = true;
+            return msg;
+        }
+
         private string GetNewEmailLinkId()
         {
-            return DateTime.Now.ToString("yyyy-mmdd-HHMM-SS")+"99";
+            var chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+            var stringChars = new char[16];
+            var random = new Random();
+
+            for (int i = 0; i < stringChars.Length; i++)
+            {
+                stringChars[i] = chars[random.Next(chars.Length)];
+            }
+            // var UniqueID = new String(stringChars);
+            return new String(stringChars);
         }
 
         // POST api/values
@@ -95,7 +155,7 @@ namespace DatingApp.API.Controllers
                 }
             }
             return Ok(file.Length.ToString());
-        }
+        }       
 
         // PUT api/values/5
         [HttpPut("{id}")]
