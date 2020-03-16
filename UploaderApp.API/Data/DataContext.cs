@@ -10,5 +10,6 @@ namespace UploaderApp.API.Data
         }
 
         public DbSet<Value> Values { get; set; }
+        public DbSet<DocumentInfo> DocumentInfo { get; set; }
     }
 }

@@ -30,6 +30,7 @@ namespace UploadApp.API
             services.AddDbContext<DataContext>(x => x.UseSqlServer(Configuration.GetConnectionString("Default")));
             services.AddControllers();
             services.AddCors();
+            services.AddScoped<ISendLinkRepository, DocumentRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
