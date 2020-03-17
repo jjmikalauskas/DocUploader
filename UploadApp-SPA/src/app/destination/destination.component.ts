@@ -58,8 +58,8 @@ export class DestinationComponent implements OnInit {
         console.log('Get data call successful');
         console.log(response);
         this.doc1 = response;
-        this.firstname = response["firstName"];
-        this.lastname = response["lastName"];
+        // this.firstname = response["firstName"];
+        // this.lastname = response["lastName"];
       },
       error => {
         console.log('Error during getDocumentInfo GET op', error);

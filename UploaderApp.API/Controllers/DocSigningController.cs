@@ -79,7 +79,7 @@ namespace UploaderApp.API.Controllers
             if (await _repo.SaveAll())
             {
                 string from = "johnmik35@hotmail.com";
-                string to = "johnmik4x@hotmail.com";
+                string to = doc.EmailAddress;
                 string subject = "Licensing agreement from IndxLogic";
 
                 MailMessage msg = CreateMsg(sLink, from, to, subject);
@@ -115,7 +115,7 @@ namespace UploaderApp.API.Controllers
         private MailMessage CreateMsg(string uniqueId, string from, string to, string subject)
         {
             MailMessage msg = null;
-            string body = "Hi. Thanks for your business. Please click this link to sign the licensing agreement. Your id is " + uniqueId;
+            string body = "Hi. Thanks for your business. Please click this link to sign the licensing agreement. Your id is" + uniqueId;
             // body += $"<button><a href='{signingBase}/{uniqueId}'></a></button>";
             // body += "<button style ='background-color='#1800ff'' > " + "" +
             //     "<a style='font-size:20px;font-family:Arial;color:#ffffff;text-align:center;text-decoration:none;display:block;" +

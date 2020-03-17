@@ -1,13 +1,13 @@
 <div class="destination bg-light">
-  <nav class="navbar navbar-expand-lg navbar-dark bg-dark cc_cursor">
-    <a class="navbar-brand mr-auto mr-lg-0 cc_pointer">company logo</a>
+  <nav class="navbar navbar-expand-lg navbar-light bg-light cc_cursor">
+    <img src="assets/images/indxlogic.png" alt="image">   
   </nav>
   <div class="container">
     <div
       class="header d-flex bg-white align-items-center p-3 my-3 rounded shadow-sm cc_cursor"
     >
       <div>
-        <h6 class="mb-0 lh-100 cc_cursor">Hi {{firstname}} {{doc1.lastName}},</h6>
+        <h6 class="mb-0 lh-100 cc_cursor">Hi {{doc1?.firstName}} {{doc1?.lastName}},</h6>
         <small>Sign your document & confirm</small>
       </div>
     </div>
@@ -21,23 +21,7 @@
             >https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf</a
           >
         </p>
-      </div>
-      <!-- <div class="media text-muted pt-3">
-        <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-          <a
-            href="https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf"
-            >https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf</a
-          >
-        </p>
-      </div>
-      <div class="media text-muted pt-3">
-        <p class="media-body pb-3 mb-0 small lh-125 border-bottom border-gray">
-          <a
-            href="https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf"
-            >https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf</a
-          >
-        </p>
-      </div> -->
+      </div>     
       <!-- <small class="d-block mt-3">
         <a href="#">All Documents</a>
       </small> -->
@@ -45,17 +29,11 @@
       <div class="media text-muted pt-3">
         <small>
           <input type="checkbox" ng-model="all" /> I agree to all the documents
-          listed above and Medical Service Agreement.<br /><br />
+          listed above and the IndxLogic Licenses and Service Agreement<br /><br />
         </small>
       </div>
       <button type="button" class="btn btn-lg btn-block btn-outline-primary" (click)="confirm()">Agree & Confirm</button>
-      <button type="button" style ="background-color:#1800ff">
-        <a style='font-size:20px;font-family:Arial;color:#ffffff;text-align:center;text-decoration:none;display:block;
-                  background-color:#1800ff;border:1px solid #1800ff;padding:12px 32px;border-radius:3px' href="http://localhost:4200/sign-doc/101">Click to view
-        </a></button>
-
     </div>
-
 
     <!-- <pdf-viewer [src]="pdfSrc" 
         [render-text]="true"
