@@ -115,8 +115,18 @@ namespace UploaderApp.API.Controllers
         private MailMessage CreateMsg(string uniqueId, string from, string to, string subject)
         {
             MailMessage msg = null;
-            string body = "Hi. Thanks for your business. Please click this link to sign the licensing agreement:";
-            body += $"<button><a href='{signingBase}/{uniqueId}'></a></button>";
+            string body = "Hi. Thanks for your business. Please click this link to sign the licensing agreement. Your id is " + uniqueId;
+            // body += $"<button><a href='{signingBase}/{uniqueId}'></a></button>";
+            // body += "<button style ='background-color='#1800ff'' > " + "" +
+            //     "<a style='font-size:20px;font-family:Arial;color:#ffffff;text-align:center;text-decoration:none;display:block;" +
+            //     "background-color:#1800ff;border:1px solid #1800ff;padding:12px 32px;border-radius:3px" +
+            //     "' href='http://www.google.com'" + uniqueId  + ">" +
+            //     "</a></button>";
+
+          body += @"<button type='button' style ='background-color:#1800ff'>
+        <a style='font-size:20px;font-family:Arial;color:#ffffff;text-align:center;text-decoration:none;display:block;
+                  background-color:#1800ff;border:1px solid #1800ff;padding:12px 32px;border-radius:3px' href='http://localhost:4200/sign-doc/" + uniqueId + @"'>Click to view
+        </a></button>";
 
             msg = new MailMessage(from, to, subject, body);
             msg.IsBodyHtml = true;
