@@ -68,8 +68,9 @@ namespace UploaderApp.API.Controllers
             // Add in useful values
             string sLink = GetNewEmailLinkId();
             doc.Description = sLink;
+            doc.UniqueLinkId = sLink;
             doc.dateSent = DateTime.Now;
-            doc.Status = "0-Sent";
+            doc.Status = "Sent";
             string[] files = doc.DocumentFullName.Split(';');
 
             var obj = JsonConvert.SerializeObject(s1);

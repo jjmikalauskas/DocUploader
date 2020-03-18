@@ -1,8 +1,9 @@
 export class DocInfo {
     id: number;
     firstname: string;
-    public lastname: string;
+    lastname: string;
     emailaddress: string;
+    title: string;
     company: string;
     salesforceid: string;
     documentfullname: string;

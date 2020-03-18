@@ -23,6 +23,8 @@ export class UploadPageComponent implements OnInit {
   userEmails = new FormGroup({
     firstname: new FormControl(''),
     lastname: new FormControl(''),
+    company: new FormControl(''),
+    title: new FormControl(''),
     email: new FormControl('',
       [
         Validators.required,
@@ -34,7 +36,6 @@ export class UploadPageComponent implements OnInit {
   constructor(private http: HttpClient, private router: Router, private route: ActivatedRoute, private notify: AlertifyService) { }
 
   ngOnInit() {
-    this.getValues();
     this.initializeUploader();
     this.dntLinkUrl = this.route.snapshot.params.temporaryUrl;
   }
@@ -68,14 +69,6 @@ export class UploadPageComponent implements OnInit {
 
   // this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
 
-  getValues() {
-    this.http.get('http://localhost:5000/api/values').subscribe(response => {
-      this.values = response;
-    }, error => {
-      console.log(error);
-    });
-  }
-
   sendDocInfo() {
     let docInfo = {
       // documents: [],
@@ -83,6 +76,7 @@ export class UploadPageComponent implements OnInit {
       firstname: this.userEmails.get('firstname').value,
       lastname: this.userEmails.get('lastname').value,
       emailaddress: this.userEmails.get('email').value,
+      title: this.userEmails.get('title').value,
       company: 'Test hospital',
       salesforceid: '101'
     };
@@ -90,7 +84,6 @@ export class UploadPageComponent implements OnInit {
     let docs = '';
     console.log('uploader=');
     this.uploader.queue.forEach(f => { console.log(f.file.name); files.push(f.file.name); docs = docs + f.file.name + ';'; });
-    //docInfo.documents = files;
     docInfo.documentfullname = docs;
     this.http.post(this.baseUrl + 'sendlink', docInfo).subscribe(
       (response) => {

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using UploaderApp.API.Data;
 
 namespace UploaderApp.API.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20200318150857_MinorMods1")]
+    partial class MinorMods1
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -27,34 +29,34 @@ namespace UploaderApp.API.Migrations
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
                     b.Property<string>("Company")
-                        .HasColumnType("VARCHAR(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Description")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("DocumentFullName")
-                        .HasColumnType("VARCHAR(300)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("EmailAddress")
-                        .HasColumnType("VARCHAR(200)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("FirstName")
-                        .HasColumnType("VARCHAR(250)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("LastName")
-                        .HasColumnType("VARCHAR(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("SalesforceId")
-                        .HasColumnType("VARCHAR(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Status")
-                        .HasColumnType("VARCHAR(20)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
-                        .HasColumnType("VARCHAR(100)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UniqueLinkId")
-                        .HasColumnType("VARCHAR(50)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("dateAgreed")
                         .HasColumnType("datetime2");
