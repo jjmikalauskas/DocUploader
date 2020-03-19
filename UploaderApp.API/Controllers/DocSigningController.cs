@@ -44,7 +44,7 @@ namespace UploaderApp.API.Controllers
             return Ok(value.Name);
         }
 
-        [Route("api/[controller]/{emaillink}")]
+        [Route("/[controller]/{emaillink}")]
         // Get api/licesing/5
         [HttpGet]
         public IActionResult GetDocInfo(string emaillink)
@@ -60,7 +60,7 @@ namespace UploaderApp.API.Controllers
         }
 
         // POST api/values
-        [HttpPost("api/sendlink")]
+        [HttpPost("/sendlink")]
         public async Task<IActionResult> Post(DocumentInfo doc) //[FromBody] string value)
         {
             string s1 = $"Sent {doc.DocumentFullName} to {doc.FirstName} {doc.LastName} at {doc.EmailAddress} at company {doc.Company}";
@@ -72,8 +72,9 @@ namespace UploaderApp.API.Controllers
             doc.dateSent = DateTime.Now;
             doc.Status = "Sent";
             string[] files = doc.DocumentFullName.Split(';');
-
-            var obj = JsonConvert.SerializeObject(s1);
+            // TESTING
+            if (string.IsNullOrEmpty(doc.DocumentFullName))
+                doc.DocumentFullName = "donttread.jfif";
 
             _repo.Add<DocumentInfo>(doc);
 
@@ -81,15 +82,25 @@ namespace UploaderApp.API.Controllers
             {
                 string from = "johnmik35@hotmail.com";
                 string to = doc.EmailAddress;
-                string subject = "Licensing agreement from IndxLogic";
+                string subject = "Master Sales Agreement for IndxLogic";
 
                 MailMessage msg = CreateMsg(sLink, from, to, subject);
                 SendMsg(msg);
-                return Ok();
+                
+                // CreatedAtRouteResult carr = CreatedAtRoute("GetEmailLink", new { emaillink = sLink });
+                return Created("GetEmailLink", new { emaillink = sLink }); // carr;
             }
 
             return BadRequest("Error saving document/ email link info to database");
         }
+
+
+        [HttpGet("emaillink", Name="GetEmailLink")]
+        public IActionResult GetEmailLink(string emaillink)
+        {
+            return Ok(emaillink);
+        }
+
 
         private bool SendMsg(MailMessage msg)
         {
@@ -149,7 +160,7 @@ namespace UploaderApp.API.Controllers
         }
 
         // POST api/values
-        [HttpPost("api/docs")]
+        [HttpPost("/docs")]
         public IActionResult PostDocs([FromForm] FilesForUpload doc) //[FromBody] string value)
         {
             var file = doc.File;

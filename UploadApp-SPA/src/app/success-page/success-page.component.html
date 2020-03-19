@@ -6,12 +6,12 @@
 </div>
 <div class="d-flex w-100 h-100 p-5 mx-auto flex-column">
   <main role="main" class="main">
-      <h1 class="cover-heading">Successfully Created!</h1>
+      <h1 class="cover-heading">Email link successfully created and sent!</h1>
       <br/>
     <p class="lead">
-      Your auto e-signing links were successfully created! To review your upload and details please click the links below!</p>
+      Your auto e-signing links were successfully sent to {{docInfo?.firstname}} {{docInfo?.lastname}}! To review your upload and details please click the links below</p>
 <ul class="esign-links">
-<a href='http://localhost:4200/sign-doc/d9363v99abX920cs'>View Documents</a>
+<a href={{emaillink}}>View Document</a>
 <!-- <a [routerLink]="['/sign-doc']" [queryParams]="{debug: true}" queryParamsHandling="merge">
 </a> -->
 <!-- for the time we send params -->

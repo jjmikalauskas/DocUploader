@@ -6,6 +6,9 @@ import { Router, ActivatedRoute } from '@angular/router';
 
 import { environment } from 'src/environments/environment';
 import { AlertifyService } from '../_services/alertify.service';
+import { SentEmailService } from '../_services/sentEmail.service';
+import { DocInfo } from '../models/docinfo';
+import { Observable } from 'rxjs';
 
 
 @Component({
@@ -25,19 +28,28 @@ export class UploadPageComponent implements OnInit {
     lastname: new FormControl(''),
     company: new FormControl(''),
     title: new FormControl(''),
-    email: new FormControl('',
-      [
-        Validators.required,
-        Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,4}$')
-      ]
-    ),
+    email: new FormControl('', [
+      Validators.required,
+      Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$')
+    ])
   });
 
-  constructor(private http: HttpClient, private router: Router, private route: ActivatedRoute, private notify: AlertifyService) { }
+  constructor(
+    private http: HttpClient,
+    private router: Router,
+    private route: ActivatedRoute,
+    private notify: AlertifyService,
+    private emailData: SentEmailService
+  ) {}
 
   ngOnInit() {
     this.initializeUploader();
     this.dntLinkUrl = this.route.snapshot.params.temporaryUrl;
+    this.userEmails.get('firstname').setValue('John');
+    this.userEmails.get('lastname').setValue('Mikalauskas');
+    this.userEmails.get('company').setValue('Southern NH Hospital');
+    this.userEmails.get('title').setValue('CIO');
+    this.userEmails.get('email').setValue('jmikalauskas@indxlogic.com');
   }
 
   public fileOverBase(e: any): void {
@@ -57,8 +69,8 @@ export class UploadPageComponent implements OnInit {
       // allowedFileType: ['image'],
       // removeAfterUpload: true,
       autoUpload: false,
-      maxFileSize: 10 * 1024 * 1024
-      , headers: [
+      maxFileSize: 10 * 1024 * 1024,
+      headers: [
         //   { name: 'Content-Type', value: 'application/x-www-form-urlencoded' },
         { name: 'Access-Control-Allow-Origin', value: 'http://localhost:4200' }
       ]
@@ -70,29 +82,47 @@ export class UploadPageComponent implements OnInit {
   // this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
 
   sendDocInfo() {
-    let docInfo = {
-      // documents: [],
+    const docInfo: DocInfo = {
       documentfullname: '',
       firstname: this.userEmails.get('firstname').value,
       lastname: this.userEmails.get('lastname').value,
       emailaddress: this.userEmails.get('email').value,
       title: this.userEmails.get('title').value,
-      company: 'Test hospital',
-      salesforceid: '101'
+      company: this.userEmails.get('company').value,
+      salesforceid: '101',
+      id: 0,
+      dateSent: new Date(),
+      description: '',
+      emaillinkid: ''
     };
-    let files = [];
+    const files = [];
     let docs = '';
     console.log('uploader=');
-    this.uploader.queue.forEach(f => { console.log(f.file.name); files.push(f.file.name); docs = docs + f.file.name + ';'; });
-    docInfo.documentfullname = docs;
-    this.http.post(this.baseUrl + 'sendlink', docInfo).subscribe(
-      (response) => {
-        this.notify.success('Document and email information saved');
-        console.log('Post call successful');
-        this.router.navigate(['/success-upload']);
-    },
-    error => {
-      console.log('Error during sendLink POST op', error);
+    this.uploader.queue.forEach(f => {
+      console.log(f.file.name);
+      files.push(f.file.name);
+      docs = docs + f.file.name + ';';
     });
+    docInfo.documentfullname = docs;
+    this.sendPostRequest(this.baseUrl + 'sendlink', docInfo).subscribe(
+      response => {
+        // debugger;
+        this.notify.success('Document and email information saved');
+        console.log('Post call successful w response=' + response.emaillink);
+        docInfo.emaillinkid = response.emaillink;
+        this.emailData.changeDocInfo(docInfo);
+        this.router.navigate(['/success-upload'], { state: {
+          emaillink: response.emaillink
+        }});
+      },
+      error => {
+        console.log('Error during sendLink POST op', error);
+      }
+    );
   }
+
+  sendPostRequest(url: string, data: any): Observable<any> {
+    return this.http.post<any>(url, data);
+  }
+
 }

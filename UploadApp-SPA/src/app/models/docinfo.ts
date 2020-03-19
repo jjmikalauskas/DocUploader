@@ -8,5 +8,6 @@ export class DocInfo {
     salesforceid: string;
     documentfullname: string;
     description: string;
+    emaillinkid: string;
     dateSent: Date;
 }

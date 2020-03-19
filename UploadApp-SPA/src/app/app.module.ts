@@ -16,6 +16,7 @@ import { DestinationComponent } from './destination/destination.component';
 import { DocumentResolverService } from './_services/documentResolver.service';
 import { DocDataService } from './_services/docData.service';
 import { AlertifyService } from './_services/alertify.service';
+import { SentEmailService } from './_services/sentEmail.service';
 
 const routes: Routes = [
    {
@@ -57,7 +58,8 @@ const routes: Routes = [
    providers: [
       AlertifyService,
       DocDataService,
-      DocumentResolverService
+      DocumentResolverService,
+      SentEmailService
    ],
    bootstrap: [
       AppComponent
