@@ -50,8 +50,9 @@
           Please enter a valid email address.
         </div>
       </div>
-    </form>
+    </form> 
   </section>
+
   <section class="add-document mb-3">
     <h3>Add Documents</h3>
     <br />
@@ -60,15 +61,14 @@
       <i class="fa fa-upload fa-3x"></i>
       <span>Drop Documents here</span>
     </div>
-    <input class="file-input" type="file" ng2FileSelect [uploader]="uploader" multiple />
+    <!-- Choose files area -->
+    <input class="file-input mt-2" type="file" ng2FileSelect [uploader]="uploader" multiple />
   </section>
-  <section class="upload-queue mb-3">
-    <!-- </div>*ngIf="uploader?.queue?.length"> -->
+
+  <section class="upload-queue mb-3" *ngIf="uploader?.queue?.length">
 
     <h3>Upload queue</h3>
-
     <p>Queue length: {{ uploader?.queue?.length }}</p>
-
     <table class="table">
       <thead>
         <tr>

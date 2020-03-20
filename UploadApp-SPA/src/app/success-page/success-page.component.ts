@@ -12,11 +12,12 @@ import { Router } from '@angular/router';
 export class SuccessPageComponent implements OnInit {
   docInfo: DocInfo;
   emaillink: string;
+  emaillinkid: string;
   statelink: string;
   baseUrl = 'localhost:4200/';
 
   constructor(private data: SentEmailService, private router: Router) {
-    debugger;
+    // debugger;
     const nav = this.router.getCurrentNavigation();
     const state = nav.extras.state as {
       emaillink: string
@@ -27,12 +28,14 @@ export class SuccessPageComponent implements OnInit {
 
   ngOnInit() {
     this.data.currentDocInfo.subscribe(di => this.docInfo = di);
-    console.log('docinfo=' + this.docInfo.emaillinkid);
+    console.log('docinfo.emaillinkid=' + this.docInfo.emaillinkid);
     this.emaillink = this.baseUrl + 'sign-doc/' + this.docInfo.emaillinkid;
+    this.emaillinkid = this.docInfo.emaillinkid;
     console.log('emaillink=' + this.emaillink);
     if (this.emaillink.length === 0) {
       this.emaillink = this.baseUrl + 'sign-doc/' + this.statelink;
-      console.log('emaillink=' + this.emaillink);
+      this.emaillinkid = this.statelink;
+      console.log('emaillink=' + this.emaillink, ' statelink=', this.statelink);
     }
 
   }

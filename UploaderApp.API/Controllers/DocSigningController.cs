@@ -15,6 +15,7 @@ using UploaderApp.API.Models;
 
 namespace UploaderApp.API.Controllers
 {
+    [Route("api/[controller]")]
     [ApiController]
     public class LicensingController : ControllerBase
     {
@@ -28,7 +29,7 @@ namespace UploaderApp.API.Controllers
 
         // GET api/values
         // [Route("api/[controller]")]
-        [HttpGet("api/[controller]")]
+        [HttpGet("")]
         public async Task<ActionResult> Get()
         {
             var values = await _context.Values.ToListAsync();
@@ -44,8 +45,8 @@ namespace UploaderApp.API.Controllers
             return Ok(value.Name);
         }
 
-        [Route("/[controller]/{emaillink}")]
-        // Get api/licesing/5
+        [Route("/{emaillink}")]
+        // Get licensing/1010101
         [HttpGet]
         public IActionResult GetDocInfo(string emaillink)
         {
@@ -59,8 +60,8 @@ namespace UploaderApp.API.Controllers
             return NoContent();
         }
 
-        // POST api/values
-        [HttpPost("/sendlink")]
+        // POST api/licensing/sendlink
+        [HttpPost]
         public async Task<IActionResult> Post(DocumentInfo doc) //[FromBody] string value)
         {
             string s1 = $"Sent {doc.DocumentFullName} to {doc.FirstName} {doc.LastName} at {doc.EmailAddress} at company {doc.Company}";
@@ -76,7 +77,7 @@ namespace UploaderApp.API.Controllers
             if (string.IsNullOrEmpty(doc.DocumentFullName))
                 doc.DocumentFullName = "donttread.jfif";
 
-            _repo.Add<DocumentInfo>(doc);
+            _repo.Add<DocumentInfo>(doc);   
 
             if (await _repo.SaveAll())
             {
@@ -88,14 +89,13 @@ namespace UploaderApp.API.Controllers
                 SendMsg(msg);
                 
                 // CreatedAtRouteResult carr = CreatedAtRoute("GetEmailLink", new { emaillink = sLink });
-                return Created("GetEmailLink", new { emaillink = sLink }); // carr;
+                return Created("GetEmailLink", new { emaillink = sLink, id = doc.Id }); // carr;
             }
 
             return BadRequest("Error saving document/ email link info to database");
         }
 
-
-        [HttpGet("emaillink", Name="GetEmailLink")]
+        [HttpGet("/emaillink", Name="GetEmailLink")]
         public IActionResult GetEmailLink(string emaillink)
         {
             return Ok(emaillink);
@@ -159,7 +159,7 @@ namespace UploaderApp.API.Controllers
             return new String(stringChars);
         }
 
-        // POST api/values
+        // POST api/licensing/docs
         [HttpPost("/docs")]
         public IActionResult PostDocs([FromForm] FilesForUpload doc) //[FromBody] string value)
         {
@@ -179,13 +179,13 @@ namespace UploaderApp.API.Controllers
             return Ok(file.Length.ToString());
         }       
 
-        // PUT api/values/5
+        // PUT api/licensing/5
         [HttpPut("{id}")]
         public void Put(int id, [FromBody] string value)
         {
         }
 
-        // DELETE api/values/5
+        // DELETE api/licensing/5
         [HttpDelete("{id}")]
         public void Delete(int id)
         {

@@ -21,7 +21,7 @@ export class UploadPageComponent implements OnInit {
   uploader: FileUploader;
   hasBaseDropZoneOver: boolean;
   droppedFiles: string[];
-  baseUrl = environment.apiUrl;
+  baseUrl = environment.apiUrl + 'api/licensing';
   dntLinkUrl = '';
   userEmails = new FormGroup({
     firstname: new FormControl(''),
@@ -75,9 +75,10 @@ export class UploadPageComponent implements OnInit {
         { name: 'Access-Control-Allow-Origin', value: 'http://localhost:4200' }
       ]
     });
-  }
 
-  // this.uploader.onBeforeUploadItem = (item) => { item.withCredentials = false; };
+    this.uploader.onBeforeUploadItem = (item) => { item.withCredentials = false; };
+
+  }
 
   // this.uploader.onAfterAddingFile = (file) => { file.withCredentials = false; };
 
@@ -104,16 +105,18 @@ export class UploadPageComponent implements OnInit {
       docs = docs + f.file.name + ';';
     });
     docInfo.documentfullname = docs;
-    this.sendPostRequest(this.baseUrl + 'sendlink', docInfo).subscribe(
+    this.sendPostRequest(this.baseUrl, docInfo).subscribe(
       response => {
         // debugger;
-        this.notify.success('Document and email information saved');
+        this.notify.success('Saved and email sent');
         console.log('Post call successful w response=' + response.emaillink);
-        docInfo.emaillinkid = response.emaillink;
-        this.emailData.changeDocInfo(docInfo);
-        this.router.navigate(['/success-upload'], { state: {
-          emaillink: response.emaillink
-        }});
+        // docInfo.emaillinkid = response.emaillink;
+        // docInfo.id = response.id;
+        // this.emailData.changeDocInfo(docInfo);
+        // this.router.navigate(['/success-upload'], { state: {
+        //   emaillink: response.emaillink,
+        //   id: response.id
+        // }});
       },
       error => {
         console.log('Error during sendLink POST op', error);
