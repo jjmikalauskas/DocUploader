@@ -24,7 +24,8 @@ resolve(route: ActivatedRouteSnapshot, state: RouterStateSnapshot): Observable<D
   //   dateSent: new Date('8/21/1965')
   // };
   // return docInfo;
-  return this.docService.getDocumentInfo(route.params['emaillink']);
+  console.log('in resolver resolve...');
+  return this.docService.getDocumentInfo(route.params.emaillink);
 }
 
 }

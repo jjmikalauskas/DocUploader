@@ -38,7 +38,7 @@ const routes: Routes = [
    {
       path: 'sign-doc/:emaillink',
       component: DestinationComponent,
-      resolve: { DocInfo: DocumentResolverService }
+      resolve: { doc: DocumentResolverService }
    },
    {
       path: 'report-page',

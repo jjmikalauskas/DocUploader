@@ -10,18 +10,22 @@
       <tr class="d-flex">
         <th class="col-2">First Name</th>
         <th class="col-3">Last Name</th>
-        <th class="col-4">Company</th>
+        <th class="col-3">Company</th>
         <th class="col-1">Status</th>
         <th class="col-2">Last Date update</th>
+        <th class="col-1">Action</th>
       </tr>
     </thead>
     <tbody>
       <tr *ngFor="let item of data" class="d-flex">
         <td class="col-2">{{ item.firstName }}</td>
         <td class="col-3">{{ item.lastName }}</td>
-        <td class="col-4">{{ item.company }}</td>
+        <td class="col-3">{{ item.company }}</td>
         <td class="col-1">{{ item.status }}</td>
         <td class="col-2">{{ item.dateSent | date }}</td>
+        <td class="col-1">
+          <button type="button" (click)="resendLink(item.id)">Resend</button>
+        </td>
       </tr>
     </tbody>
   </table>

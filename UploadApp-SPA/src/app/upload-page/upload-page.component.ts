@@ -104,7 +104,7 @@ export class UploadPageComponent implements OnInit {
       files.push(f.file.name);
       docs = docs + f.file.name + ';';
     });
-    docInfo.documentfullname = docs;
+    docInfo.documentfullname = 'C:\\users\\default.DESKTOP-GRQ62EF\\Pictures\\' + docs;
     this.sendPostRequest(this.baseUrl, docInfo).subscribe(
       response => {
         // debugger;

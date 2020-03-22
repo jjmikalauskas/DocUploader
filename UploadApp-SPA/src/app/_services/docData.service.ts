@@ -15,8 +15,9 @@ export class DocDataService {
 constructor(private http: HttpClient) { }
 
 getDocumentInfo(emaillink): Observable<DocInfo> {
-  return this.http.get<DocInfo>(this.baseUrl + 'licensing/' + emaillink);
-  // return x;
+  const url = this.baseUrl + 'api/licensing/' + emaillink;
+  console.log('in docdataservice...');
+  return this.http.get<DocInfo>(url);
 }
 
 getReportInfo(page?, itemsPerPage?, filter?): Observable<PaginationResult<DocInfo[]>> {
@@ -44,6 +45,18 @@ getReportInfo(page?, itemsPerPage?, filter?): Observable<PaginationResult<DocInf
         return paginatedResults;
       })
     );
+}
+
+resendLink(id: number) {
+  return this.http.post(this.baseUrl + 'api/licensing/resendlink/' + id, {});
+}
+
+updateViewDate(id: number) {
+  return this.http.put(this.baseUrl + 'api/licensing/' + 'view-doc/' + id, {});
+}
+
+updateAgreeDate(id: number) {
+  return this.http.put(this.baseUrl  + 'api/licensing/' + 'confirm-doc/' + id, {});
 }
 
 }

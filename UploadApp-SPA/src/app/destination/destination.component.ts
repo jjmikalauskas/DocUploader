@@ -12,11 +12,10 @@ import { DocDataService } from '../_services/docData.service';
   styleUrls: ['./destination.component.css']
 })
 export class DestinationComponent implements OnInit {
-
   baseUrl = environment.apiUrl;
   pdfSrc = 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf';
   public isCollapsed = false;
-  doc1: DocInfo;
+  emaildoc: DocInfo;
   emailLink = '';
   firstname: string;
   lastname = '';
@@ -33,41 +32,56 @@ export class DestinationComponent implements OnInit {
   ngOnInit() {
     this.emailLink = this.route.snapshot.params.emaillink;
     console.log('emaillink=' + this.emailLink.trim());
-    // this.route.queryParams.subscribe(params => {
-    //   console.log(params.emaillink);
-    // });
-    console.log('resolver data=');
-    // this.route.data.subscribe(
-    //   (data: { doc: DocInfo }) => {
-    //     console.log(data);
-    //     this.doc1 = data.doc;
-    //     this.lastname = data.doc.lastname;
-    //     this.firstname = 'Test1';
-    //   });
-    this.getDocumentInfo(this.emailLink);
-    // this.route.data.subscribe(data => this.doc1 = data);
-    // debugger;
+    this.route.data.subscribe(response => {
+      // debugger;
+      this.emaildoc = response.doc;
+      console.log('resolver subscribe response=', response.doc);
+    });
+    // Without this, you get some strange console errors sometimes...arghh!! 
+    // cannot read property of 'canhaz' of undefined
+    this.documentName = this.emaildoc['documentFullName'];
+    console.log('Doc id=', this.emaildoc.id, ' with doc ', this.documentName);
   }
 
-  getDocumentInfo(emaillink: string) {
-    const url = this.baseUrl + 'licensing/' + emaillink;
-    console.log(url);
-    this.docService.getDocumentInfo(emaillink).subscribe(
-      (response: DocInfo) => {
-        // debugger;
-        console.log('Get data call successful');
-        console.log(response);
-        this.doc1 = response;
-        // this.firstname = response["firstName"];
-        // this.lastname = response["lastName"];
-      },
-      error => {
-        console.log('Error during getDocumentInfo GET op', error);
-      }
-    );
+  // getDocumentInfo(emaillink: string) {
+  //   const url = this.baseUrl + 'api/licensing/' + emaillink;
+  //   console.log(url);
+  //   this.docService.getDocumentInfo(emaillink).subscribe(
+  //     (response: DocInfo) => {
+  //       // debugger;
+  //       console.log('Get data call successful');
+  //       console.log(response);
+  //       this.emaildoc = response;
+  //       // this.firstname = response["firstName"];
+  //       // this.lastname = response["lastName"];
+  //     },
+  //     error => {
+  //       console.log('Error during getDocumentInfo GET op', error);
+  //     }
+  //   );
+  // }
+
+  view() {
+    this.docService.updateViewDate(this.emaildoc.id)
+      .subscribe(
+        () => {
+          this.notify.success('Date Viewed updated successfully');
+        },
+        error => {
+          this.notify.error('Error updating date viewed.' + error);
+        }
+      );
   }
 
   confirm() {
-    console.log('confirmation email has been sent to requestor');
+    this.docService.updateAgreeDate(this.emaildoc.id)
+      .subscribe(
+        () => {
+          this.notify.success('Date Agreed updated successfully');
+        },
+        error => {
+          this.notify.error('Error updating date agreed.' + error);
+        }
+      );
   }
 }

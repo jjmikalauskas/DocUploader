@@ -30,6 +30,11 @@ namespace UploaderApp.API.Data
             return await _context.DocumentInfo.FirstOrDefaultAsync(d => d.Description == guidString);
         }
 
+         public async Task<DocumentInfo> GetDocumentInfoById(int id)
+        {
+            return await _context.DocumentInfo.FirstOrDefaultAsync(doc => doc.Id == id);
+        }
+
         public async Task<PagedList<DocumentInfo>> GetReport(ReportParams rptParams, string filter = "")
         {
             // DbSet<DocumentInfo> docs = _context.DocumentInfo; // as IQueryable<DocumentInfo>;

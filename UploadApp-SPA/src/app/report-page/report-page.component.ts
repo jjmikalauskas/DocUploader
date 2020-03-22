@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { AlertifyService } from '../_services/alertify.service';
 import { DocDataService } from '../_services/docData.service';
-import { environment } from 'src/environments/environment';
 import { DocInfo } from '../models/docinfo';
 import { PaginationResult, Pagination } from '../models/Pagination';
 import { ActivatedRoute } from '@angular/router';
@@ -36,7 +35,7 @@ export class ReportPageComponent implements OnInit {
   pagination: Pagination;
 
   constructor(private http: HttpClient,
-              private notify: AlertifyService,
+              private alertify: AlertifyService,
               private docService: DocDataService,
               private route: ActivatedRoute) { }
 
@@ -97,5 +96,21 @@ export class ReportPageComponent implements OnInit {
       }
     );
   }
+
+  resendLink(id: number) {
+    console.log('Resending link for #', id);
+    const msg = 'Please confim that you want to resend the link';
+    this.alertify.confirm(msg, () => {
+      console.log('Calling post to resend link #', id);
+      this.docService.resendLink(id).subscribe(
+        resp => {
+          this.alertify.success('Resent email link');
+        },
+        error => {
+          this.alertify.error('Error during resend link: ' + error);
+        }
+      );
+    });
+   }
 
 }
