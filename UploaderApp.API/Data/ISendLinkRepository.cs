@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
+using UploaderApp.API.Helpers;
 using UploaderApp.API.Models;
 
 namespace UploaderApp.API.Data
@@ -10,6 +12,7 @@ namespace UploaderApp.API.Data
          Task<bool> SaveAll();
          
          Task<DocumentInfo> GetEmailLink(Guid guid, string guidString);
+         Task<PagedList<DocumentInfo>> GetReport(ReportParams rptParams, string filter = "");
 
         //  Task<bool> ClickOnLink(Guid guid);
 

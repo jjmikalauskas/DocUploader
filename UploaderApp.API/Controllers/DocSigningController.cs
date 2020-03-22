@@ -11,6 +11,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using UploaderApp.API.Data;
 using UploaderApp.API.Dtos;
+using UploaderApp.API.Helpers;
 using UploaderApp.API.Models;
 
 namespace UploaderApp.API.Controllers
@@ -58,6 +59,18 @@ namespace UploaderApp.API.Controllers
                 return Ok(doc);
             }
             return NoContent();
+        }
+
+        // Get licensing/1010101
+        [HttpGet("report")]
+        [HttpGet("report/{filter}")]
+        public async Task<IActionResult> GetReport([FromQuery] ReportParams rptParams, string filter)
+        {
+            var docs = _repo.GetReport(rptParams, filter).Result;
+
+            Response.AddPagination(docs.CurrentPage, docs.PageSize, docs.TotalCount, docs.TotalPages);
+
+            return Ok(docs);
         }
 
         // POST api/licensing/sendlink
@@ -122,7 +135,7 @@ namespace UploaderApp.API.Controllers
             return true;
         }
 
-        private string signingBase = "localhost:5000/licensing/";
+        private string signingBase = "localhost:5000/api/licensing/";
 
         private MailMessage CreateMsg(string uniqueId, string from, string to, string subject)
         {

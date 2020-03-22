@@ -6,6 +6,7 @@ import { Routes, RouterModule } from '@angular/router';
 
 import { FileUploadModule } from 'ng2-file-upload';
 import { PdfViewerModule } from 'ng2-pdf-viewer';
+import { Ng2SmartTableModule } from 'ng2-smart-table';
 
 import { AppComponent } from './app.component';
 
@@ -17,6 +18,11 @@ import { DocumentResolverService } from './_services/documentResolver.service';
 import { DocDataService } from './_services/docData.service';
 import { AlertifyService } from './_services/alertify.service';
 import { SentEmailService } from './_services/sentEmail.service';
+import { ReportPageComponent } from './report-page/report-page.component';
+import { NavComponent } from './nav/nav.component';
+import { PaginationModule } from 'ngx-bootstrap/pagination';
+import { ReportPageResolverService } from './_services/ReportPageResolver.service';
+import { SearchComponent } from './search/search.component';
 
 const routes: Routes = [
    {
@@ -33,6 +39,12 @@ const routes: Routes = [
       path: 'sign-doc/:emaillink',
       component: DestinationComponent,
       resolve: { DocInfo: DocumentResolverService }
+   },
+   {
+      path: 'report-page',
+      component: ReportPageComponent,
+      resolve: { docs : ReportPageResolverService }
+
    }
 ];
 
@@ -44,7 +56,10 @@ const routes: Routes = [
       SuccessPageComponent,
       DestinationComponent,
       SuccessPageComponent,
-      DestinationComponent
+      DestinationComponent,
+      ReportPageComponent,
+      NavComponent,
+      SearchComponent
    ],
    imports: [
       BrowserModule,
@@ -53,7 +68,9 @@ const routes: Routes = [
       FileUploadModule,
       ReactiveFormsModule,
       PdfViewerModule,
-      RouterModule.forRoot(routes)
+      Ng2SmartTableModule,
+      RouterModule.forRoot(routes),
+      PaginationModule.forRoot()
    ],
    providers: [
       AlertifyService,

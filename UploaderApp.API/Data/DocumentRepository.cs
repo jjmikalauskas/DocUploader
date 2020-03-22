@@ -1,6 +1,9 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using UploaderApp.API.Helpers;
 using UploaderApp.API.Models;
 
 namespace UploaderApp.API.Data
@@ -25,6 +28,20 @@ namespace UploaderApp.API.Data
                 return await _context.DocumentInfo.FirstOrDefaultAsync(d => d.Id == 1);
             }
             return await _context.DocumentInfo.FirstOrDefaultAsync(d => d.Description == guidString);
+        }
+
+        public async Task<PagedList<DocumentInfo>> GetReport(ReportParams rptParams, string filter = "")
+        {
+            // DbSet<DocumentInfo> docs = _context.DocumentInfo; // as IQueryable<DocumentInfo>;
+            if (!string.IsNullOrEmpty(filter)) {
+               var q = _context.DocumentInfo.Where(doc => doc.LastName.Contains(filter) || doc.Company.Contains(filter));
+               return await PagedList<DocumentInfo>.CreateAsync(q, rptParams.PageNumber, rptParams.PageSize);
+            }
+            else { 
+                // DbSet<DocumentInfo> docs = _context.DocumentInfo;
+                var docs = _context.DocumentInfo.Where(x => x != null);
+                return await PagedList<DocumentInfo>.CreateAsync(docs, rptParams.PageNumber, rptParams.PageSize);
+            }            
         }
 
         public async Task<bool> SaveAll()

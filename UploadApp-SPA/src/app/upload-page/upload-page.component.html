@@ -1,6 +1,3 @@
-<app-header (reset)="initializeUploader($event)" (sendDocInfo)="sendDocInfo($event)">
-</app-header>
-
 <div class="upload-page">
   <section class="form">
     <form [formGroup]="userEmails" class="needs-validation cc_cursor info-form" novalidate="" _lpchecked="1">
@@ -107,4 +104,12 @@
       </ul>
     </div>
   </section>
+
+  <button type="button" class="btn btn-warning btn-s mr-3" (click)="initializeUploader($event)">
+    <span class="fa fa-ban"></span> Clear
+  </button>
+  <button type="button" class="btn btn-danger btn-s mr-3" (click)="sendDocInfo($event)"
+    [disabled]="!uploader.queue.length">
+    <span class="fa fa-trash"></span> Send Email Link
+  </button>
 </div>
