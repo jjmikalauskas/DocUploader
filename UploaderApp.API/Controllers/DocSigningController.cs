@@ -68,6 +68,7 @@ namespace UploaderApp.API.Controllers
             if (doc != null)
             {
                 doc.dateViewed = DateTime.Now;
+                doc.Status = Status.Viewed.ToString();
                 if (await _repo.SaveAll())
                 {
                     return Ok();
@@ -83,6 +84,7 @@ namespace UploaderApp.API.Controllers
             if (doc != null)
             {
                 doc.dateAgreed = DateTime.Now;
+                doc.Status = Status.Agreed.ToString();
                 if (await _repo.SaveAll())
                 {
                     string s1 = $"Confirming #{doc.Id} {doc.LastName} at {doc.EmailAddress} at company {doc.Company}";
@@ -123,7 +125,7 @@ namespace UploaderApp.API.Controllers
             doc.Description = sLink;
             doc.UniqueLinkId = sLink;
             doc.dateSent = DateTime.Now;
-            doc.Status = "Sent";
+            doc.Status = Status.Sent.ToString();
             string[] files = doc.DocumentFullName.Split(';');
             // TESTING
             if (string.IsNullOrEmpty(doc.DocumentFullName))
@@ -160,6 +162,12 @@ namespace UploaderApp.API.Controllers
 
                 MailMessage msg = CreateMsg(doc, from, to, subject);
                 SendMsg(msg);
+
+                doc.Description = "Sent originally at " + doc.dateSent.ToString();
+                doc.dateResent = DateTime.Now;
+                doc.Status = Status.Resent.ToString();
+
+                await _repo.SaveAll();
                 
                 return Ok();
             }

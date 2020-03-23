@@ -35,7 +35,7 @@ namespace UploaderApp.API.Models
         public DateTime dateSent { get; set; }
         public DateTime dateViewed { get; set; }
         public DateTime dateAgreed { get; set; }
-        public DateTime dateConfirmationSent { get; set; }
+        public DateTime dateResent { get; set; }
 
         [Column(TypeName = "VARCHAR(20)")]
         public string Status { get; set; }
