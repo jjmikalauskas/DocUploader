@@ -106,8 +106,33 @@ namespace UploaderApp.API.Controllers
         [HttpGet("report/{filter}")]
         public async Task<IActionResult> GetReport([FromQuery] ReportParams rptParams, string filter)
         {
+            string search = "";
             Console.WriteLine("New get report call w/ filter=" + filter);
-            var docs = _repo.GetReport(rptParams, filter).Result;
+            // If there is some sort of filter or search
+            if (!string.IsNullOrEmpty(filter)) { 
+                // If there is a combo of filter+ search
+                if (filter.Contains('+')) { 
+                    string[] parts = filter.Split('+');
+                    if (parts[0] == "Agreed" || parts[0]=="Viewed" || parts[0] == "Sent" || parts[0] == "Resent") {
+                        filter = parts[0];
+                        search = parts[1];
+                    }
+                    else { 
+                        filter = parts[1];
+                        search = parts[0];
+                    }
+                } // else if there is only a filter
+                else if (filter == "Agreed" || filter=="Viewed" || filter == "Sent" || filter == "Resent") { 
+                    search = ""; 
+                }
+                else { 
+                    search = filter; 
+                    filter = "";
+                }
+            }
+
+            Console.WriteLine($"New GetReport call w/ filter={filter} and Search={search}");
+            var docs = _repo.GetReport(rptParams, filter, search).Result;
 
             Response.AddPagination(docs.CurrentPage, docs.PageSize, docs.TotalCount, docs.TotalPages);
 

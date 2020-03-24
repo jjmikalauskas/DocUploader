@@ -10,4 +10,7 @@ export class DocInfo {
     description: string;
     emaillinkid: string;
     dateSent: Date;
+    dateViewed: Date;
+    dateAgreed: Date;
+    dateResent: Date;
 }

@@ -1,7 +1,7 @@
 <div class="destination bg-light">
-  <nav class="navbar navbar-expand-lg navbar-light bg-light cc_cursor">
+  <!-- <nav class="navbar navbar-expand-lg navbar-light bg-light cc_cursor">
     <img src="assets/images/indxlogic.png" alt="image">   
-  </nav>
+  </nav> -->
   <div class="container">
     <div
       class="header d-flex bg-white align-items-center p-3 my-3 rounded shadow-sm cc_cursor"
@@ -29,11 +29,18 @@
       <br/>
       <div class="media text-muted pt-3">
         <small>
-          <input type="checkbox" ng-model="all" /> I have recieved, read and agree to all the documents
+          <input type="checkbox" ng-model="received" (change)="onCheckboxChange($event.target.checked)" /> I have received, read and agree to all the documents
           listed above and the IndxLogic Licenses and Master Sales Agreement<br /><br />
         </small>
       </div>
-      <button type="button" class="btn btn-lg btn-block btn-outline-success" (click)="confirm()">Agree & Confirm</button>
+      <!-- <p *ngIf="received">Check box has been checked</p>
+      <p *ngIf="!received">Check box is not checked</p>
+      <p *ngIf="viewed">Document has been viewed</p>
+      <p *ngIf="!viewed">Document has NOT been viewed</p> -->
+      <button type="button" [disabled]="!viewed || !received" class="btn btn-lg btn-block btn-success"         
+          (click)="confirm()">Agree & Confirm6</button>
+          <!-- [(ngModel)]="viewed"
+          ng-disabled="!viewed && !all" -->
     </div>
 
     <!-- <pdf-viewer [src]="pdfSrc" 

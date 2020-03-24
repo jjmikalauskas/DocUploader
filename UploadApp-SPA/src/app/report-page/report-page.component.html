@@ -1,8 +1,11 @@
 <!-- <div class="container mt-3">  
   <ng2-smart-table [settings]="settings" [source]="data"></ng2-smart-table>
 </div> -->
-<app-search (sendSearch)="newSearch($event)" ></app-search>
+<app-search 
+  (sendSearch)="newSearch($event)" 
+  (sendFilter)="newSearch($event)" ></app-search>
 
+<ngx-spinner></ngx-spinner>
 <div class="container-fluid mt-3">
 
   <table class="table table-striped">
@@ -17,12 +20,12 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let item of data" class="d-flex">
+      <tr *ngFor="let item of data2" class="d-flex">
         <td class="col-2">{{ item.firstName }}</td>
         <td class="col-3">{{ item.lastName }}</td>
         <td class="col-3">{{ item.company }}</td>
         <td class="col-1">{{ item.status }}</td>
-        <td class="col-2">{{ item.dateSent | date }}</td>
+        <td class="col-2">{{ item.lastActionDate | date }}</td>
         <td class="col-1">
           <button type="button" (click)="resendLink(item.id)">Resend</button>
         </td>
@@ -38,3 +41,4 @@
     firstText="&laquo;" lastText="&raquo;">
   </pagination>
 </div>
+<ngx-spinner></ngx-spinner>

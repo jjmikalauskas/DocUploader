@@ -10,6 +10,7 @@ import { map } from 'rxjs/operators';
   providedIn: 'root'
 })
 export class DocDataService {
+  // s/b localhost:5000/
   baseUrl = environment.apiUrl;
 
 constructor(private http: HttpClient) { }

@@ -1,3 +1,6 @@
+
+<ngx-spinner></ngx-spinner>
+
 <div class="upload-page">
   <section class="form">
     <form [formGroup]="userEmails" class="needs-validation cc_cursor info-form" novalidate="" _lpchecked="1">
@@ -51,8 +54,7 @@
   </section>
 
   <section class="add-document mb-3">
-    <h3>Add Documents</h3>
-    <br />
+    <h4>Add Documents</h4>
     <div ng2FileDrop [ngClass]="{ 'nv-file-over': hasBaseDropZoneOver }" (fileOver)="fileOverBase($event)" 
       [uploader]="uploader" class="card bg-faded p-3 text-center my-drop-zone">
       <i class="fa fa-upload fa-3x"></i>
@@ -60,17 +62,18 @@
     </div>
     <!-- Choose files area -->
     <input class="file-input mt-2" type="file" ng2FileSelect [uploader]="uploader" multiple />
-  </section>
+  <!-- </section>
 
-  <section class="upload-queue mb-3" *ngIf="uploader?.queue?.length">
+  <section class="upload-queue mb-3"  > -->
+  <!-- *ngIf="uploader?.queue?.length"> -->
 
-    <h3>Upload queue</h3>
-    <p>Queue length: {{ uploader?.queue?.length }}</p>
+    <h4>Upload queue</h4>
+    <!-- <p>Queue length: {{ uploader?.queue?.length }}</p> -->
     <table class="table">
       <thead>
         <tr>
-          <th width="50%">Name</th>
-          <th>Size</th>
+          <th >Name</th>
+          <th >Size</th>
         </tr>
       </thead>
       <tbody>
@@ -84,7 +87,7 @@
         </tr>
       </tbody>
     </table>
-    <div class="mb-3 queue">
+    <!-- <div class="mb-3 queue">
       <p>Queue progress:</p>
       <div class="progress-bar" role="progressbar" [ngStyle]="{ width: uploader.progress + '%' }"></div>
       
@@ -101,8 +104,8 @@
           [disabled]="!uploader.queue.length">
           <span class="fa fa-trash"></span> Remove
         </button>
-      </ul>
-    </div>
+      </ul> 
+    </div> -->
   </section>
 
   <button type="button" class="btn btn-warning btn-s mr-3" (click)="initializeUploader($event)">

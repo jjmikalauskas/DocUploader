@@ -7,7 +7,11 @@ import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 })
 export class SearchComponent implements OnInit {
   @Output() sendSearch = new EventEmitter();
-  search: 'Test';
+  search: string = 'Test';
+  sent = false;
+  resent = false;
+  viewed = false;
+  agreed = false;
 
   constructor() { }
 
@@ -17,6 +21,21 @@ export class SearchComponent implements OnInit {
   searchReport() {
     console.log('Searching for ', this.search);
     this.sendSearch.emit(this.search);
+  }
+
+  onCheckboxChange(value: string, ischecked: boolean) {
+    console.log('radio button', value, ' is checked=', ischecked);
+    // this.sendFilter.emit(value);
+    this.sendSearch.emit(value);
+  }
+
+  clearFilters() {
+    this.search = '';
+    this.sent = false;
+    this.resent = false;
+    this.viewed = false;
+    this.agreed = false;
+    this.sendSearch.emit('');
   }
 
 }

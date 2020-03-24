@@ -27,7 +27,7 @@ namespace UploaderApp.API.Data
             {
                 return await _context.DocumentInfo.FirstOrDefaultAsync(d => d.Id == 1);
             }
-            return await _context.DocumentInfo.FirstOrDefaultAsync(d => d.Description == guidString);
+            return await _context.DocumentInfo.FirstOrDefaultAsync(d => d.UniqueLinkId == guidString);
         }
 
          public async Task<DocumentInfo> GetDocumentInfoById(int id)
@@ -35,14 +35,21 @@ namespace UploaderApp.API.Data
             return await _context.DocumentInfo.FirstOrDefaultAsync(doc => doc.Id == id);
         }
 
-        public async Task<PagedList<DocumentInfo>> GetReport(ReportParams rptParams, string filter = "")
+        public async Task<PagedList<DocumentInfo>> GetReport(ReportParams rptParams, string filter = "", string search = "")
         {
             // DbSet<DocumentInfo> docs = _context.DocumentInfo; // as IQueryable<DocumentInfo>;
-            if (!string.IsNullOrEmpty(filter)) {
-               var q = _context.DocumentInfo.Where(doc => doc.LastName.Contains(filter) || doc.Company.Contains(filter));
-               return await PagedList<DocumentInfo>.CreateAsync(q, rptParams.PageNumber, rptParams.PageSize);
+            IQueryable<DocumentInfo> query;
+            if (!string.IsNullOrEmpty(search)) {
+               query = _context.DocumentInfo.Where(doc => doc.LastName.Contains(search) || doc.Company.Contains(search));
+               if (!string.IsNullOrEmpty(filter)) { 
+                   query = query.Where(doc => doc.Status == filter);
+               }
+               return await PagedList<DocumentInfo>.CreateAsync(query, rptParams.PageNumber, rptParams.PageSize);
             }
-            else { 
+            else if (filter == "Agreed" || filter=="Viewed" || filter == "Sent" || filter == "Resent") {
+               var q = _context.DocumentInfo.Where(doc => doc.Status == filter);
+               return await PagedList<DocumentInfo>.CreateAsync(q, rptParams.PageNumber, rptParams.PageSize);
+            } else { 
                 // DbSet<DocumentInfo> docs = _context.DocumentInfo;
                 var docs = _context.DocumentInfo.Where(x => x != null);
                 return await PagedList<DocumentInfo>.CreateAsync(docs, rptParams.PageNumber, rptParams.PageSize);

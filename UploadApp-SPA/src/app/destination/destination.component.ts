@@ -5,6 +5,7 @@ import { HttpClient } from '@angular/common/http';
 import { AlertifyService } from '../_services/alertify.service';
 import { DocInfo } from '../models/docinfo';
 import { DocDataService } from '../_services/docData.service';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 @Component({
   selector: 'app-destination',
@@ -14,16 +15,19 @@ import { DocDataService } from '../_services/docData.service';
 export class DestinationComponent implements OnInit {
   baseUrl = environment.apiUrl;
   pdfSrc = 'https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf';
-  public isCollapsed = false;
+  isCollapsed = false;
   emaildoc: DocInfo;
   emailLink = '';
   firstname: string;
   lastname = '';
   documentName: string;
+  viewed = false;
+  received = false;
 
   constructor(
     private http: HttpClient,
     private docService: DocDataService,
+    private spinner: NgxSpinnerService,
     private router: Router,
     private route: ActivatedRoute,
     private notify: AlertifyService
@@ -41,6 +45,7 @@ export class DestinationComponent implements OnInit {
     // cannot read property of 'canhaz' of undefined
     this.documentName = this.emaildoc['documentFullName'];
     console.log('Doc id=', this.emaildoc.id, ' with doc ', this.documentName);
+    this.received = false;
   }
 
   // getDocumentInfo(emaillink: string) {
@@ -66,6 +71,7 @@ export class DestinationComponent implements OnInit {
       .subscribe(
         () => {
           this.notify.success('Date Viewed updated successfully');
+          this.viewed = true;
         },
         error => {
           this.notify.error('Error updating date viewed.' + error);
@@ -74,6 +80,7 @@ export class DestinationComponent implements OnInit {
   }
 
   confirm() {
+    if (!this.viewed) { return; }
     this.docService.updateAgreeDate(this.emaildoc.id)
       .subscribe(
         () => {
@@ -84,4 +91,9 @@ export class DestinationComponent implements OnInit {
         }
       );
   }
+
+  onCheckboxChange(isChecked: boolean) {
+    this.received = isChecked;
+  }
+
 }

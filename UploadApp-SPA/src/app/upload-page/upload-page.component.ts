@@ -9,6 +9,7 @@ import { AlertifyService } from '../_services/alertify.service';
 import { SentEmailService } from '../_services/sentEmail.service';
 import { DocInfo } from '../models/docinfo';
 import { Observable } from 'rxjs';
+import { NgxSpinnerService } from 'ngx-spinner';
 
 
 @Component({
@@ -39,10 +40,13 @@ export class UploadPageComponent implements OnInit {
     private router: Router,
     private route: ActivatedRoute,
     private notify: AlertifyService,
+    private spinner: NgxSpinnerService,
     private emailData: SentEmailService
   ) {}
 
   ngOnInit() {
+    //debugger;
+    this.spinner.show();
     this.initializeUploader();
     this.dntLinkUrl = this.route.snapshot.params.temporaryUrl;
     this.userEmails.get('firstname').setValue('John');
@@ -50,6 +54,9 @@ export class UploadPageComponent implements OnInit {
     this.userEmails.get('company').setValue('Southern NH Hospital');
     this.userEmails.get('title').setValue('CIO');
     this.userEmails.get('email').setValue('jmikalauskas@indxlogic.com');
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 300);
   }
 
   public fileOverBase(e: any): void {
@@ -93,6 +100,9 @@ export class UploadPageComponent implements OnInit {
       salesforceid: '101',
       id: 0,
       dateSent: new Date(),
+      dateViewed: new Date(),
+      dateAgreed: new Date(),
+      dateResent: new Date(),
       description: '',
       emaillinkid: ''
     };
@@ -105,6 +115,8 @@ export class UploadPageComponent implements OnInit {
       docs = docs + f.file.name + ';';
     });
     docInfo.documentfullname = 'C:\\users\\default.DESKTOP-GRQ62EF\\Pictures\\' + docs;
+
+    this.spinner.show();
     this.sendPostRequest(this.baseUrl, docInfo).subscribe(
       response => {
         // debugger;
@@ -122,6 +134,9 @@ export class UploadPageComponent implements OnInit {
         console.log('Error during sendLink POST op', error);
       }
     );
+    setTimeout(() => {
+      this.spinner.hide();
+    }, 1000);
   }
 
   sendPostRequest(url: string, data: any): Observable<any> {
