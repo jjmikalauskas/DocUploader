@@ -8,7 +8,7 @@
     >
       <div>
         <h6 class="mb-0 lh-100 cc_cursor">Hi {{emaildoc.firstName}} {{emaildoc.lastName}},</h6>
-        <small>Sign your document & confirm</small>
+        <small>Please confirm your receipt of the documents beloww</small>
       </div>
     </div>
     <div class="my-3 p-3 bg-white rounded shadow-sm">
@@ -20,7 +20,7 @@
             href="{{emaildoc.documentFullName}}"
             >{{emaildoc.documentFullName}}</a
           > -->
-          Document: {{documentName}} <button type="button" class="btn btn-primary ml-3" (click)="view()">View</button>  
+          {{documentName}} <button type="button" class="btn btn-primary ml-3" (click)="view()">View</button>  
         </p>
       </div>     
       <!-- <small class="d-block mt-3">
@@ -28,17 +28,18 @@
       </small> -->
       <br/>
       <div class="media text-muted pt-3">
-        <small>
+        <!-- <small>
           <input type="checkbox" ng-model="received" (change)="onCheckboxChange($event.target.checked)" /> I have received, read and agree to all the documents
-          listed above and the IndxLogic Licenses and Master Sales Agreement<br /><br />
-        </small>
+          listed above, the IndxLogic Licenses and Master Sales Agreement<br /><br />
+        </small> -->
       </div>
       <!-- <p *ngIf="received">Check box has been checked</p>
       <p *ngIf="!received">Check box is not checked</p>
       <p *ngIf="viewed">Document has been viewed</p>
       <p *ngIf="!viewed">Document has NOT been viewed</p> -->
-      <button type="button" [disabled]="!viewed || !received" class="btn btn-lg btn-block btn-success"         
-          (click)="confirm()">Agree & Confirm6</button>
+      <!-- <button type="button" [disabled]="!viewed || !received" class="btn btn-lg btn-block btn-success"          -->
+      <button type="button" [disabled]="!viewed" class="btn btn-lg btn-block btn-success"         
+          (click)="confirm()">I have received the above documents</button>
           <!-- [(ngModel)]="viewed"
           ng-disabled="!viewed && !all" -->
     </div>

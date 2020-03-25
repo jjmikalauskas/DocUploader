@@ -40,18 +40,20 @@ namespace UploaderApp.API.Data
             // DbSet<DocumentInfo> docs = _context.DocumentInfo; // as IQueryable<DocumentInfo>;
             IQueryable<DocumentInfo> query;
             if (!string.IsNullOrEmpty(search)) {
-               query = _context.DocumentInfo.Where(doc => doc.LastName.Contains(search) || doc.Company.Contains(search));
+               query = _context.DocumentInfo
+                    .Where(doc => doc.LastName.Contains(search) || doc.Company.Contains(search))
+                    .OrderByDescending(r => (filter == "Agreed" ? r.dateAgreed : filter == "Resent" ? r.dateResent : filter == "Viewed" ? r.dateViewed : r.dateSent));
                if (!string.IsNullOrEmpty(filter)) { 
                    query = query.Where(doc => doc.Status == filter);
                }
                return await PagedList<DocumentInfo>.CreateAsync(query, rptParams.PageNumber, rptParams.PageSize);
             }
             else if (filter == "Agreed" || filter=="Viewed" || filter == "Sent" || filter == "Resent") {
-               var q = _context.DocumentInfo.Where(doc => doc.Status == filter);
+               var q = _context.DocumentInfo.Where(doc => doc.Status == filter).OrderByDescending(r => (filter == "Agreed" ? r.dateAgreed : filter == "Resent" ? r.dateResent : filter == "Viewed" ? r.dateViewed : r.dateSent));
                return await PagedList<DocumentInfo>.CreateAsync(q, rptParams.PageNumber, rptParams.PageSize);
             } else { 
                 // DbSet<DocumentInfo> docs = _context.DocumentInfo;
-                var docs = _context.DocumentInfo.Where(x => x != null);
+                var docs = _context.DocumentInfo.Where(x => x != null).OrderByDescending(r => (filter == "Agreed" ? r.dateAgreed : filter == "Resent" ? r.dateResent : filter == "Viewed" ? r.dateViewed : r.dateSent));
                 return await PagedList<DocumentInfo>.CreateAsync(docs, rptParams.PageNumber, rptParams.PageSize);
             }            
         }

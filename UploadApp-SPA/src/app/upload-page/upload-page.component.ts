@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { FileUploader } from 'ng2-file-upload';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
@@ -34,6 +34,7 @@ export class UploadPageComponent implements OnInit {
       Validators.pattern('^[a-z0-9._%+-]+@[a-z0-9.-]+.[a-z]{2,4}$')
     ])
   });
+  @ViewChild('firstName', {static: true}) firstNameField: ElementRef;
 
   constructor(
     private http: HttpClient,
@@ -45,7 +46,7 @@ export class UploadPageComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    //debugger;
+    // debugger;
     this.spinner.show();
     this.initializeUploader();
     this.dntLinkUrl = this.route.snapshot.params.temporaryUrl;
@@ -122,6 +123,8 @@ export class UploadPageComponent implements OnInit {
         // debugger;
         this.notify.success('Saved and email sent');
         console.log('Post call successful w response=' + response.emaillink);
+        this.clearFields();
+        // this.uploader.clearQueue();
         // docInfo.emaillinkid = response.emaillink;
         // docInfo.id = response.id;
         // this.emailData.changeDocInfo(docInfo);
@@ -137,6 +140,23 @@ export class UploadPageComponent implements OnInit {
     setTimeout(() => {
       this.spinner.hide();
     }, 1000);
+  }
+
+  clearFields() {
+    this.userEmails.get('firstname').setValue('');
+    this.userEmails.get('lastname').setValue('');
+    this.userEmails.get('company').setValue('');
+    this.userEmails.get('title').setValue('');
+    this.userEmails.get('email').setValue('');
+    this.uploader.clearQueue();
+    debugger;
+    let qlen =  this.uploader.queue.length;
+    try {
+    for (let i = 0; i < qlen ; i++) {
+         this.uploader.queue[i].remove();
+      }
+    } catch {}
+    this.firstNameField.nativeElement.focus();
   }
 
   sendPostRequest(url: string, data: any): Observable<any> {

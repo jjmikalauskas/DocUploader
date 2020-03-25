@@ -107,6 +107,8 @@ namespace UploaderApp.API.Controllers
         public async Task<IActionResult> GetReport([FromQuery] ReportParams rptParams, string filter)
         {
             string search = "";
+            string filter1 = HttpContext.Request.Query["filter"].ToString();
+            string search1 = HttpContext.Request.Query["search"].ToString();
             Console.WriteLine("New get report call w/ filter=" + filter);
             // If there is some sort of filter or search
             if (!string.IsNullOrEmpty(filter)) { 

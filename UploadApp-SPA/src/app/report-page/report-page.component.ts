@@ -13,6 +13,12 @@ import { NgxSpinnerService } from 'ngx-spinner';
   styleUrls: ['./report-page.component.css']
 })
 export class ReportPageComponent implements OnInit {
+  pagination: Pagination;
+  search = '';
+  filter = '';
+  searchFilter = '';
+
+  data2 = new Array();
 
   constructor(private http: HttpClient,
               private alertify: AlertifyService,
@@ -20,16 +26,12 @@ export class ReportPageComponent implements OnInit {
               private docService: DocDataService,
               private route: ActivatedRoute) { }
   // data: DocInfo[];
-  pagination: Pagination;
-  searchFilter = '';
-
-  data2 = new Array();
-
+ 
   ngOnInit() {
     this.spinner.show();
     setTimeout(() => {
       this.spinner.hide();
-    }, 333);
+    }, 200);
     this.getReportData();
   }
 
@@ -81,6 +83,7 @@ export class ReportPageComponent implements OnInit {
       (response: PaginationResult<DocInfo[]>) => {
         // this.data = response.result;
         this.addLastActionDate(response.result);
+        // this.data2.sort( (a, b) => a.lastActionDate - b.lastActionDate );
         this.pagination = response.pagination;
       },
       error => {
@@ -89,27 +92,52 @@ export class ReportPageComponent implements OnInit {
     );
   }
 
-  addFilter(newFilter: string) {
-    if (newFilter === '') {
-      return '';
-    }
-    if (this.searchFilter === 'Sent' || this.searchFilter === 'Resent' ||
-        this.searchFilter === 'Viewed' || this.searchFilter === 'Agreed') {
-      return this.searchFilter + '+' + newFilter;
-    }
-    return newFilter;
-  }
+  // addFilter(newFilter: string) {
+  //   let comboFilter = '';
 
+  //   // Parse filter first
+  //   if (newFilter === '') {
+  //     comboFilter = '';
+  //   } else if (this.searchFilter.includes('Sent') || this.searchFilter.includes('Resent') ||
+  //       this.searchFilter.includes('Viewed') || this.searchFilter.includes('Agreed')) {
+  //         if (newFilter.includes('Sent') || newFilter.includes('Resent') ||
+  //             newFilter.includes('Viewed') || newFilter.includes('Agreed')) {
+  //               comboFilter = newFilter;
+  //         } else {
+  //           comboFilter = this.searchFilter + '+' + newFilter;
+  //         }
+  //   } else {
+  //     comboFilter = newFilter;
+  //   }
+  //   console.log('This.searchFilter', this.searchFilter, 'New filter', newFilter, 'Combo filter', comboFilter);
+  //   return comboFilter;
+  // }
+
+  // This can be: Sent, south+Sent, or south
   newSearch(filter: string) {
     this.spinner.show();
-    this.searchFilter = this.addFilter(filter);
-    console.log('Received new search', this.searchFilter);
+    if (filter === '') {
+      this.searchFilter = '';
+      this.search = this.filter = '';
+    } else  if (!this.searchFilter.includes(filter)) {
+        // let parts = filter.split('+');
+        if (filter.includes('Sent') || filter.includes('Resent') ||
+            filter.includes('Viewed') || filter.includes('Agreed')) {
+              this.filter = filter;
+            } else {
+              // is it not a filter term then it is a search
+              this.search = filter;
+            }
+        this.searchFilter = this.search + '+' + this.filter;
+    } //  this.addFilter(filter);
+    console.log('Filter in', filter, 'Received new search', this.searchFilter);
     this.docService.getReportInfo(this.pagination.currentPage, this.pagination.itemsPerPage, this.searchFilter).subscribe(
       (response: PaginationResult<DocInfo[]>) => {
         // debugger;
         console.log(response.result);
         // this.data2 = response.result;
         this.addLastActionDate(response.result);
+        // this.data2.sort( (a, b) => { console.log(a.lastActionDate);  return a.lastActionDate - b.lastActionDate ; } );
         this.pagination = response.pagination;
       },
       error => {
@@ -118,7 +146,7 @@ export class ReportPageComponent implements OnInit {
     );
     setTimeout(() => {
       this.spinner.hide();
-    }, 800);
+    }, 300);
   }
 
   // newFilter(filter: string) {

@@ -16,11 +16,18 @@
 
   <div class="row float-right mt-1">
     <form class="form-inline " #passwordForm="ngForm" (ngSubmit)="searchReport()">
+      <!-- <div class="btn-group">
+        <input id="searchinput" class="form-control mr-sm-2" type="search" class="form-control" placeholder="Search" required >
+        <a class="clear" (click)="clearSearch()">
+          <span id="searchclear" class="glyphicon glyphicon-remove-circle" ></span>
+        </a>        
+      </div> -->
       <input class="form-control mr-sm-2" type="text" id="search" name="search" placeholder="Search" required
         [(ngModel)]="search">
-      <button class="btn btn-success my-sm-0" type="submit">Search</button>
+      <button class="btn btn-success ml-2 my-sm-0" type="submit">Search</button>
     </form>
-    <button class="btn btn-warning ml-4 my-sm-0" (click)="clearFilters()"><span class="fa fa-ban"></span> Clear
+    <button class="btn btn-warning ml-4 my-sm-0" *ngIf="anythingOn()"
+      (click)="clearFilters()"><span class="fa fa-ban"></span> Clear filter and search
     </button>
   </div>
 </div>
