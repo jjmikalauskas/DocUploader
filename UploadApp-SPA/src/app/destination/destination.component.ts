@@ -85,11 +85,13 @@ export class DestinationComponent implements OnInit {
       .subscribe(
         () => {
           this.notify.success('Date Agreed updated successfully');
+          this.router.navigate(['/confirmation-page']);
         },
         error => {
           this.notify.error('Error updating date agreed.' + error);
         }
       );
+
   }
 
   onCheckboxChange(isChecked: boolean) {

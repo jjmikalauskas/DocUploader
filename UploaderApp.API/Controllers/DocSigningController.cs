@@ -28,27 +28,12 @@ namespace UploaderApp.API.Controllers
             _context = context;
         }
 
-        // GET api/values
-        // [Route("api/[controller]")]
-        [HttpGet("")]
-        public async Task<ActionResult> Get()
-        {
-            var values = await _context.Values.ToListAsync();
-            return Ok(values);
-        }
-
-        [Route("api/values/{id}")]
-        // GET api/values/5
-        [HttpGet]
-        public async Task<IActionResult> Get(int id)
-        {
-            var value = await _context.Values.FirstOrDefaultAsync(x => x.Id == id);           
-            return Ok(value.Name);
-        }
-
-        [Route("{emaillink}")]
+        /// <summary>
+        /// Retrieves the specified Document using the unique emaillinkid
+        /// </summary>
+        /// <param name="emaillink"></param> 
         // Get api/licensing/1010101
-        [HttpGet]
+        [HttpGet("{emaillink}")]
         public IActionResult GetDocInfo(string emaillink)
         {
             string s1 = "not found";
@@ -61,6 +46,11 @@ namespace UploaderApp.API.Controllers
             return NoContent();
         }
 
+        /// <summary>
+        /// view-doc/{id} updates the date viewed field
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Ok</returns>
         [HttpPut("view-doc/{id}")]
         public async Task<IActionResult> UpdateDateViewed(int id)
         {
@@ -77,6 +67,11 @@ namespace UploaderApp.API.Controllers
             return BadRequest($"Error updating dateViewed");
         }
 
+        /// <summary>
+        /// confirm-doc/{id} updates the date confirmed field, and sends a confirmation email to the end user
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Ok</returns>
         [HttpPut("confirm-doc/{id}")]
         public async Task<IActionResult> ConfirmReceipt(int id)
         {
@@ -101,7 +96,12 @@ namespace UploaderApp.API.Controllers
             return BadRequest($"Cannot find id # {id}. Error confirming receipt");
         }
 
-        // Get licensing/1010101
+        /// <summary>
+        /// Get report based on ReportParams and filter/ search 
+        /// </summary>
+        /// <param name="rptParams"></param>
+        /// <param name="filter"></param>
+        /// <returns>PagedList of DocumentInfo</returns>
         [HttpGet("report")]
         [HttpGet("report/{filter}")]
         public async Task<IActionResult> GetReport([FromQuery] ReportParams rptParams, string filter)
@@ -141,7 +141,11 @@ namespace UploaderApp.API.Controllers
             return Ok(docs);
         }
 
-        // POST api/licensing/sendlink
+        /// <summary>
+        /// Create new record in database and send initial email to end user
+        /// </summary>
+        /// <param name="doc"></param>
+        /// <returns>DocInfo object</returns>
         [HttpPost]
         public async Task<IActionResult> Post(DocumentInfo doc) //[FromBody] string value)
         {
@@ -176,6 +180,11 @@ namespace UploaderApp.API.Controllers
             return BadRequest("Error saving document/ email link info to database");
         }
 
+        /// <summary>
+        /// Resend link to end user updates dateResent and (re)sends an email to end user
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
         [HttpPost("resendlink/{id}")]
         public async Task<IActionResult> Post(int id)
         {
@@ -201,6 +210,11 @@ namespace UploaderApp.API.Controllers
             return BadRequest($"Cannot find id # {id}. Error resending email");
         }
 
+        /// <summary>
+        /// Internal GET call to support POST return 
+        /// </summary>
+        /// <param name="emaillink"></param>
+        /// <returns></returns>
         [HttpGet("/emaillink", Name="GetEmailLink")]
         public IActionResult GetEmailLink(string emaillink)
         {
@@ -295,15 +309,15 @@ namespace UploaderApp.API.Controllers
         // }       
 
         // PUT api/licensing/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
-        {
-        }
+        // [HttpPut("{id}")]
+        // public void Put(int id, [FromBody] string value)
+        // {
+        // }
 
-        // DELETE api/licensing/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
-        }
+        // // DELETE api/licensing/5
+        // [HttpDelete("{id}")]
+        // public void Delete(int id)
+        // {
+        // }
     }
 }

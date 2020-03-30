@@ -116,6 +116,7 @@ export class UploadPageComponent implements OnInit {
       docs = docs + f.file.name + ';';
     });
     docInfo.documentfullname = 'C:\\users\\default.DESKTOP-GRQ62EF\\Pictures\\' + docs;
+    debugger;
 
     this.spinner.show();
     this.sendPostRequest(this.baseUrl, docInfo).subscribe(
@@ -149,7 +150,7 @@ export class UploadPageComponent implements OnInit {
     this.userEmails.get('title').setValue('');
     this.userEmails.get('email').setValue('');
     this.uploader.clearQueue();
-    debugger;
+    // debugger;
     let qlen =  this.uploader.queue.length;
     try {
     for (let i = 0; i < qlen ; i++) {

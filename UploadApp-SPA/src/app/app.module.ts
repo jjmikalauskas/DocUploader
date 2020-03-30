@@ -25,6 +25,7 @@ import { PaginationModule } from 'ngx-bootstrap/pagination';
 import { ReportPageResolverService } from './_services/ReportPageResolver.service';
 import { SearchComponent } from './search/search.component';
 import { NgxSpinnerModule } from 'ngx-spinner';
+import { ConfirmationPageComponent } from './confirmation-page/confirmation-page.component';
 
 const routes: Routes = [
    {
@@ -32,7 +33,7 @@ const routes: Routes = [
       redirectTo: 'upload-page',
       pathMatch: 'full'
    },
-   { 
+   {
      path: 'upload-page',
      component: UploadPageComponent
    },
@@ -49,6 +50,10 @@ const routes: Routes = [
       path: 'report-page',
       component: ReportPageComponent,
       resolve: { docs : ReportPageResolverService }
+   },
+   {
+      path: 'confirmation-page',
+      component: ConfirmationPageComponent
    }
 ];
 
@@ -63,7 +68,8 @@ const routes: Routes = [
       DestinationComponent,
       ReportPageComponent,
       NavComponent,
-      SearchComponent
+      SearchComponent,
+      ConfirmationPageComponent
    ],
    imports: [
       BrowserModule,
